@@ -15,6 +15,7 @@ exports.createConversationRoom = async (user1Id, user2Id) => {
                     message: "",
                     timestamp: "",
                 },
+                type: "individual",
             })
             return conversationRef.id;
         })
@@ -38,6 +39,31 @@ exports.getAllConversations = async (userId) => {
         return conversations;
     } catch (error) {
         console.log(error)
+        throw error;
+    }
+}
+
+exports.createGroupChatRoom = async (userIds) => {
+    try {
+        const participants = [];
+        for (let i = 0; i < userIds.length; i++) {
+            const user = await getUserInfo(userIds[i]);
+            participants.push({
+                [`participant_${i + 1}`]: user,
+            });
+        }
+        const conversationRef = await db.collection('conversations').add({
+            type: "group",
+            participants,
+            lastMessage: {
+                senderId: "",
+                messageType: "",
+                message: "",
+                timestamp: "",
+            },
+        })
+        return conversationRef.id;
+    } catch (error) {
         throw error;
     }
 }
