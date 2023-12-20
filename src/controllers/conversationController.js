@@ -22,3 +22,14 @@ exports.getAllConversations = async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+exports.createGroupChatRoom = async (req, res) => {
+    try {
+      const userIds = req.body.userIds;
+      const conversationRoomId = await conversationService.createGroupChatRoom(userIds);
+      res.status(200).json({ conversationRoomId });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+}
