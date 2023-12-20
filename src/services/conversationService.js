@@ -61,6 +61,8 @@ exports.createGroupChatRoom = async (userIds) => {
                 message: "",
                 timestamp: "",
             },
+            groupAvatar: "",
+            groupName: "",
         })
         return conversationRef.id;
     } catch (error) {
