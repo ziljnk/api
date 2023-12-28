@@ -19,6 +19,7 @@ exports.createMessage = async (conversationId, senderId, messageType, message, t
                     message: message,
                     timestamp: timestamp,
                 },
+                lastTimestamp: timestamp,
             })
         })
         return messageRef.id;
