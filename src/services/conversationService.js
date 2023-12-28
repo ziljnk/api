@@ -16,6 +16,12 @@ exports.createConversationRoom = async (user1Id, user2Id) => {
                     timestamp: "",
                 },
                 type: "individual",
+                pinMessage: {
+                    senderId: "",
+                    messageType: "",
+                    message: "",
+                    timestamp: "",
+                },
             })
             return conversationRef.id;
         })
@@ -76,5 +82,24 @@ exports.createGroupChatRoom = async (userIds) => {
         return conversationRef.id;
     } catch (error) {
         throw error;
+    }
+}
+
+exports.pinMessage = async (conversationId, message) => {
+    try {
+        const conversationRef = db.collection('conversations').doc(conversationId);
+
+        await conversationRef.update({ pinMessage: message });
+
+        const updatedDocument = await conversationRef.get();
+        const updatedConversation = {
+            id: updatedDocument.id,
+            ...updatedDocument.data(),
+        };
+
+        return { success: true, message: 'Pin message updated successfully', updatedConversation };
+    } catch (error) {
+        console.error(error);
+        throw error; // Rethrow the error so it can be caught in the calling function
     }
 }

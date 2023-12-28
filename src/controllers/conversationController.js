@@ -33,3 +33,15 @@ exports.createGroupChatRoom = async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+exports.pinMessage = async (req, res) => {
+    try {
+        const conversationId = req.body.conversationId;
+        const message = req.body.message;
+        const conversations = await conversationService.pinMessage(conversationId, message);
+        res.status(200).json({conversations});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}

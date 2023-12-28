@@ -4,5 +4,6 @@ const messageController = require('../controllers/messageController');
 
 router.post('/', messageController.createMessage);
 router.post('/delete', messageController.deleteMessage);
+router.patch('/pinMessage', conversationController.pinMessage)
 
 module.exports = router;
