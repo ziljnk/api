@@ -26,7 +26,17 @@ exports.createConversationRoom = async (user1Id, user2Id) => {
 
 exports.getAllConversations = async (userId) => {
     try {
-        const conversationRef = db.collection('conversations').where(Filter.or(Filter.where('participant_1.id', '==', userId), Filter.where('participant_2.id', '==', userId)));
+        const conversationRef = db.collection('conversations').where(
+            Filter.or(
+                (
+                    Filter.or(
+                        Filter.where('participant_1.id', '==', userId),
+                        Filter.where('participant_2.id', '==', userId),
+                    )
+                ),
+                Filter.where('participants_array', 'array-contains', userId)       
+            )
+        )
         const conversationDocs = await conversationRef.get();
         const conversations = [];
         conversationDocs.forEach((doc) => {
@@ -48,9 +58,7 @@ exports.createGroupChatRoom = async (userIds) => {
         const participants = [];
         for (let i = 0; i < userIds.length; i++) {
             const user = await getUserInfo(userIds[i]);
-            participants.push({
-                [`participant_${i + 1}`]: user,
-            });
+            participants.push(user);
         }
         const conversationRef = await db.collection('conversations').add({
             type: "group",
@@ -63,7 +71,8 @@ exports.createGroupChatRoom = async (userIds) => {
             },
             groupAvatar: "",
             groupName: "",
-        })
+            participants_array: userIds,
+        });
         return conversationRef.id;
     } catch (error) {
         throw error;
