@@ -26,8 +26,8 @@ exports.getAllConversations = async (req, res) => {
 exports.createGroupChatRoom = async (req, res) => {
     try {
       const userIds = req.body.userIds;
-      const conversationRoomId = await conversationService.createGroupChatRoom(userIds);
-      res.status(200).json({ conversationRoomId });
+      const conversationRoomInfor = await conversationService.createGroupChatRoom(userIds);
+      res.status(200).json({ conversationRoomInfor });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
