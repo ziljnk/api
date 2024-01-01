@@ -78,6 +78,12 @@ exports.createGroupChatRoom = async (userIds) => {
             groupAvatar: "",
             groupName: "",
             participants_array: userIds,
+            pinMessage: {
+                senderId: "",
+                messageType: "",
+                message: "",
+                timestamp: "",
+            },
         });
         return {
             id: conversationRef.id,
